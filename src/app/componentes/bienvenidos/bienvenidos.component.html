@@ -1,3 +1,19 @@
-<h1>
-    Bienvenidos a GAMEZONE !!!!!!!!!!!!!
+<h1 class="text-center text-light my-4">
+  Bienvenidos a GAMEZONE
 </h1>
+
+<div *ngIf="user" class="text-center text-light">
+  <h2>Bienvenido, {{ user.email }}!</h2>
+
+
+  <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+    <a  class="btn btn-danger btn-lg px-4 shadow rounded-pill text-white fw-bold">🎯 Ahorcado</a>
+    <a  class="btn btn-success btn-lg px-4 shadow rounded-pill text-white fw-bold">🔢 Mayor o Menor</a>
+    <a  class="btn btn-primary btn-lg px-4 shadow rounded-pill text-white fw-bold">❓ Preguntados</a>
+    <a  class="btn btn-dark btn-lg px-4 shadow rounded-pill text-white fw-bold">🎲 Diezmil</a>
+  </div>
+</div>
+
+<div *ngIf="!user" class="text-center text-warning mt-4">
+  <p>No has iniciado sesión.</p>
+</div>

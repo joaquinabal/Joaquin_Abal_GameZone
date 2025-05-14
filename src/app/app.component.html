@@ -11,11 +11,14 @@
         <li class="nav-item">
           <a class="nav-link" aria-current="page" routerLink="home">Home</a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="!user" class="nav-item">
           <a class="nav-link" routerLink="register">Registro</a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="!user" class="nav-item">
           <a class="nav-link" routerLink="login">Login</a>
+        </li>
+        <li *ngIf="user" class="nav-item">
+          <a class="nav-link"(click)="logout()" routerLink="home">Log Out</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="quiensoy">QuienSoy</a>

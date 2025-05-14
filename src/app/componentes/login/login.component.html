@@ -1,4 +1,25 @@
-<input type="text" [(ngModel)]="email" placeholder="email">
-<br>
-<input type="password" [(ngModel)]="password" placeholder="Password">
-<button (click)="login()">Login</button>
+<div class="d-flex justify-content-center align-items-center vh-100" >
+  <div class="card p-4 shadow-lg rounded-4" style="width: 100%; max-width: 400px; background-color: rgba(0, 0, 0, 0.85); border: 2px solid #1a1a1a;">
+    <h3 class="text-center text-light mb-4">Iniciar Sesión</h3>
+
+    <form (ngSubmit)="login()">
+      <div class="mb-3">
+        <label class="form-label text-light">Correo electrónico</label>
+        <div class="input-group">
+          <input type="text" [(ngModel)]="email" name="email" placeholder="email" class="form-control bg-dark text-light border-secondary" required />
+          <button type="button" class="btn btn-outline-info" (click)="autocompletarEmail()">Auto</button>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label text-light">Contraseña</label>
+        <div class="input-group">
+          <input type="password" [(ngModel)]="password" name="password" placeholder="Password" class="form-control bg-dark text-light border-secondary" required />
+          <button type="button" class="btn btn-outline-info" (click)="autocompletarPassword()">Auto</button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-success w-100">Login</button>
+    </form>
+  </div>
+</div>
