@@ -1,0 +1,47 @@
+<div class="d-flex flex-column h-100 p-3" style="height: 500px;">
+  <!-- Contenedor de mensajes -->
+  <div #chatContainer class="flex-grow-1 overflow-auto mb-3">
+<div *ngFor="let msg of messages.slice(-7)">
+  <div
+    class="d-flex mb-2"
+    [ngClass]="{
+      'justify-content-end': msg.sender_id === currentUser?.id,
+      'justify-content-start': msg.sender_id !== currentUser?.id
+    }"
+  >
+    <div
+      [ngClass]="{
+        'bg-success text-white': msg.sender_id === currentUser?.id,
+        'bg-light text-dark': msg.sender_id !== currentUser?.id
+      }"
+      class="p-2 rounded shadow-sm"
+      [ngStyle]="{
+        'max-width': '70%',
+        'width': 'fit-content',
+        'word-break': 'break-word'
+      }"
+    >
+      <!-- Mostrar email solo si es otro usuario -->
+      <div *ngIf="msg.sender_id !== currentUser?.id" class="fw-bold mb-1 small text-primary">
+        {{ msg.sender_email }}
+      </div>
+
+      <div>{{ msg.content }}</div>
+      <div class="text-end small text-muted">{{ msg.created_at | date: 'shortTime' }}</div>
+    </div>
+  </div>
+</div>
+
+  <!-- Formulario de entrada -->
+  <form (ngSubmit)="sendMessage()" class="d-flex gap-2">
+    <input
+      type="text"
+      [(ngModel)]="newMessage"
+      name="message"
+      class="form-control"
+      placeholder="Escribe un mensaje..."
+      required
+    />
+    <button type="submit" class="btn btn-primary">Enviar</button>
+  </form>
+</div>

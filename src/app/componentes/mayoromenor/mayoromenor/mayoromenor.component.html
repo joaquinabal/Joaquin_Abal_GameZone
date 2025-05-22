@@ -1,0 +1,25 @@
+<!-- mayor-menor.component.html -->
+<div class="container text-center mt-4">
+  <h2>Mayor o Menor</h2>
+  <p *ngIf="!currentCard">Presiona "Iniciar" para comenzar</p>
+
+  <div *ngIf="currentCard" class="my-3">
+    <div class="card mx-auto" style="width: 6rem;">
+      <div class="card-body">
+        <h3>{{ currentCard?.value }}</h3>
+        <p>{{ currentCard?.suit }}</p>
+      </div>
+    </div>
+
+    <div class="btn-group mt-3">
+      <button class="btn btn-success" (click)="guess(true)" [disabled]="gameOver">Mayor</button>
+      <button class="btn btn-danger" (click)="guess(false)" [disabled]="gameOver">Menor</button>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <p>Puntaje: {{ score }}</p>
+    <p *ngIf="gameOver" class="text-danger">¡Perdiste! 😢</p>
+    <button class="btn btn-primary" (click)="startGame()">Iniciar</button>
+  </div>
+</div>
