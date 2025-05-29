@@ -34,7 +34,7 @@ export const routes: Routes = [
     {
         path:'juegos',
     loadChildren: () =>
-    import('./componentes/juegos/juegos/juegos.routes').then(m => m.juegosRoutes)
+    import('./componentes/juegos/juegos/juegos.module').then(m => m.JuegosModule)
   },
     {
         path: '**',
