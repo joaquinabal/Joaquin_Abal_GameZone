@@ -15,6 +15,8 @@ export class ChatComponent implements OnInit {
   messages: any[] = [];
   newMessage: string = '';
   currentUser: any;
+  @ViewChild('lastMessage') lastMessageElement!: ElementRef;
+
 
   constructor() {
  this.supabase = createClient("https://heeyngkurdgdlcfryorg.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhlZXluZ2t1cmRnZGxjZnJ5b3JnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNDM2NjksImV4cCI6MjA2MTcxOTY2OX0.8_hEGRfdaNsiQmQNEIbDHD8lIXoafIbTpfGgd-DOPh8");
@@ -88,13 +90,11 @@ listenToMessages() {
 scrollToBottom() {
   try {
     setTimeout(() => {
-      if (this.chatContainer?.nativeElement) {
-        console.log("funca");
-        this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+      if (this.lastMessageElement) {
+        this.lastMessageElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
       }
     }, 100);
   } catch (err) {
-    console.log("no funca");
     console.error('Error en scrollToBottom:', err);
   }
 }

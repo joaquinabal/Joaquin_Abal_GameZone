@@ -1,19 +1,26 @@
-<div class="d-flex flex-column h-100 p-3 border rounded" style="height: 500px; width: 50%; background: rgba(255, 255, 255, 0.9);">
+<div class="d-flex flex-column h-100 p-3 border rounded" style="height: 500px; width: 100%; background: rgba(255, 255, 255, 0.9);">
   <!-- Contenedor de mensajes -->
   <div #chatContainer id="chat-container" class="flex-grow-1 overflow-auto mb-3">
-    <div *ngFor="let msg of messages">
-      <div
-        class="d-flex mb-2"
-        [ngClass]="{
-          'justify-content-end': msg.sender_id === currentUser?.id,
-          'justify-content-start': msg.sender_id !== currentUser?.id
-        }"
-      >
-        <div
-          [ngClass]="{
-            'bg-success text-white': msg.sender_id === currentUser?.id,
-            'bg-light text-dark': msg.sender_id !== currentUser?.id
-          }"
+   <div *ngFor="let msg of messages; let last = last">
+  <div
+    class="d-flex mb-2"
+    [ngClass]="{
+      'justify-content-end': msg.sender_id === currentUser?.id,
+      'justify-content-start': msg.sender_id !== currentUser?.id
+    }"
+  >
+    <div
+      [ngClass]="{
+        'bg-success text-white': msg.sender_id === currentUser?.id,
+        'bg-light text-dark': msg.sender_id !== currentUser?.id
+      }"
+      class="p-2 rounded shadow-sm"
+      [ngStyle]="{
+        'max-width': '70%',
+        'width': 'fit-content',
+        'word-break': 'break-word'
+      }"
+      
           class="p-2 rounded shadow-sm"
           [ngStyle]="{
             'max-width': '70%',
@@ -27,11 +34,13 @@
           </div>
 
           <div>{{ msg.content }}</div>
-          <div class="text-end small text-muted">{{ msg.created_at | date: 'shortTime' }}</div>
+          <div class="text-end small text-muted">{{ msg.created_at | date: 'short' }}</div>
         </div>
       </div>
     </div>
   </div>
+
+  <div #lastMessage></div>
 
   <!-- Formulario de entrada -->
   <form (ngSubmit)="sendMessage()" class="d-flex gap-2">
