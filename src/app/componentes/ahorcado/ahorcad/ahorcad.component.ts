@@ -13,6 +13,7 @@ export class AhorcadoComponent implements OnInit {
   palabraSecreta: string = '';
   letrasMostradas: string[] = [];
   letrasDisponibles: string[] = [];
+  letrasUsadas: string[] = [];
   vidas: number = 3;
   imagenActual: string = '';
   juegoTerminado: boolean = false;
@@ -23,19 +24,22 @@ export class AhorcadoComponent implements OnInit {
   }
 
   iniciarJuego() {
-    this.palabraSecreta = this.palabras[Math.floor(Math.random() * this.palabras.length)];
-    this.letrasMostradas = Array(this.palabraSecreta.length).fill('_');
-    this.letrasDisponibles = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-    this.vidas = 7;
-    this.juegoTerminado = false;
-    this.mensajeFinal = '';
-    this.actualizarImagen();
-  }
+  this.palabraSecreta = this.palabras[Math.floor(Math.random() * this.palabras.length)];
+  this.letrasMostradas = Array(this.palabraSecreta.length).fill('_');
+  this.letrasDisponibles = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  this.letrasUsadas = [];
+  this.vidas = 7;
+  this.juegoTerminado = false;
+  this.mensajeFinal = '';
+  this.actualizarImagen();
+}
+
 
   adivinar(letra: string) {
-    if (this.juegoTerminado) return;
+    
+    this.letrasUsadas.push(letra);
 
-    this.letrasDisponibles = this.letrasDisponibles.filter(l => l !== letra);
+    if (this.juegoTerminado) return;   
 
     if (this.palabraSecreta.includes(letra)) {
       this.palabraSecreta.split('').forEach((char, idx) => {
@@ -47,13 +51,16 @@ export class AhorcadoComponent implements OnInit {
         this.mensajeFinal = '¡Ganaste!';
       }
     } else {
+      console.log("entro mal");
       this.vidas--;
       this.actualizarImagen();
-      if (this.vidas < 0) {
+      if (this.vidas < 1) {
         this.juegoTerminado = true;
         this.mensajeFinal = `¡Perdiste! La palabra era: ${this.palabraSecreta}`;
       }
     }
+    console.log(this.vidas);
+    console.log(this.juegoTerminado);
   }
 
   actualizarImagen() {

@@ -1,6 +1,6 @@
 // chat.component.ts
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
 
@@ -20,6 +20,8 @@ export class ChatComponent implements OnInit {
  this.supabase = createClient("https://heeyngkurdgdlcfryorg.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhlZXluZ2t1cmRnZGxjZnJ5b3JnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNDM2NjksImV4cCI6MjA2MTcxOTY2OX0.8_hEGRfdaNsiQmQNEIbDHD8lIXoafIbTpfGgd-DOPh8");
   }
 
+  @ViewChild('chatContainer') chatContainer!: ElementRef;
+
   async ngOnInit() {
     const { data: { user } } = await this.supabase.auth.getUser();
     this.currentUser = user;
@@ -36,6 +38,7 @@ export class ChatComponent implements OnInit {
 
     if (!error) {
       this.messages = data;
+      setTimeout(() => this.scrollToBottom(), 100);
     }
   }
 
@@ -47,6 +50,7 @@ listenToMessages() {
       { event: 'INSERT', schema: 'public', table: 'messages' }, 
       (payload) => {
         this.messages = [...this.messages, payload.new];
+        setTimeout(() => this.scrollToBottom(), 100);
       }
     )
     .subscribe();
@@ -73,12 +77,28 @@ listenToMessages() {
     }
   ]);
 
+  this.scrollToBottom(); 
   if (error) {
     console.error('Error al enviar mensaje:', error);
   } else {
     this.newMessage = '';
   }
 }
+
+scrollToBottom() {
+  try {
+    setTimeout(() => {
+      if (this.chatContainer?.nativeElement) {
+        console.log("funca");
+        this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+      }
+    }, 100);
+  } catch (err) {
+    console.log("no funca");
+    console.error('Error en scrollToBottom:', err);
+  }
+}
+
 
 
 }

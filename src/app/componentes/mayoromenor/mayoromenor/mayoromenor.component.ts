@@ -1,57 +1,75 @@
 import { Component, OnInit } from '@angular/core';
-import { BarajaService, Card } from '../../../services/baraja/baraja.service';
+import { DeckApiService } from '../../../services/deck-api/deck-api.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
+  selector: 'mayor-menor',
   standalone: true,
   imports: [CommonModule],
-  selector: 'mayor-menor',
-  templateUrl: './mayoromenor.component.html',
+  templateUrl: './mayoromenor.component.html'
 })
-export class MayorMenorComponent implements OnInit {
-  deck: Card[] = [];
-  currentCard!: Card | null ;
-  nextCard!: Card | null ;
+export class MayorMenorComponent {
+  deckId: string = '';
+  currentCard: any = null;
+  nextCard: any = null;
   score = 0;
   gameOver = false;
 
-  constructor(private barajaService: BarajaService) {}
 
-  ngOnInit(): void {
-    // Opcional: iniciar el juego automáticamente
-    // this.startGame();
+  
+  constructor(private deckService: DeckApiService) {}
+
+  ngOnInit(){
+    this.startGame();
   }
 
-  startGame(): void {
-    this.deck = this.barajaService.getShuffledDeck();
-    this.score = 0;
-    this.gameOver = false;
-    this.currentCard = this.deck.pop() || null;
-    this.nextCard = null;
+  startGame() {
+    this.deckService.crearMazo().subscribe(data => {
+      this.deckId = data.deck_id;
+      this.score = 0;
+      this.gameOver = false;
+      this.drawCard();
+    });
   }
 
-  guess(higher: boolean): void {
-    if (this.gameOver || !this.deck.length || !this.currentCard) return;
+  drawCard() {
+    this.deckService.sacarCarta(this.deckId).subscribe(data => {
+      this.currentCard = data.cards[0];
+    });
+  }
 
-    this.nextCard = this.deck.pop()!;
+  guess(higher: boolean) {
+    this.deckService.sacarCarta(this.deckId).subscribe(data => {
+      this.nextCard = data.cards[0];
 
-    if (this.nextCard.value === this.currentCard.value) {
-      // Empate: tomar la siguiente carta sin sumar ni perder
-      this.currentCard = this.nextCard;
-      this.nextCard = null;
-      return;
-    }
+      const currValue = this.getCardNumericValue(this.currentCard.value);
+      const nextValue = this.getCardNumericValue(this.nextCard.value);
 
-    const isCorrect =
-      (higher && this.nextCard.value > this.currentCard.value) ||
-      (!higher && this.nextCard.value < this.currentCard.value);
+      if (currValue === nextValue) {
+        this.currentCard = this.nextCard;
+        this.nextCard = null;
+        return;
+      }
 
-    if (isCorrect) {
-      this.score++;
-      this.currentCard = this.nextCard;
-      this.nextCard = null;
-    } else {
-      this.gameOver = true;
+      const isCorrect = (higher && nextValue > currValue) || (!higher && nextValue < currValue);
+
+      if (isCorrect) {
+        this.score++;
+        this.currentCard = this.nextCard;
+        this.nextCard = null;
+      } else {
+        this.gameOver = true;
+      }
+    });
+  }
+
+  getCardNumericValue(value: string): number {
+    switch (value) {
+      case 'ACE': return 1;
+      case 'JACK': return 11;
+      case 'QUEEN': return 12;
+      case 'KING': return 13;
+      default: return parseInt(value, 10);
     }
   }
 }

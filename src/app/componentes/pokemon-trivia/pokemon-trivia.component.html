@@ -1,0 +1,67 @@
+<div *ngIf="!gameOver">
+  <div class="card text-center">
+    <div class="card-header">
+      Pregunta {{ currentQuestionIndex + 1 }} de {{ questions.length }}
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">¿Quién es este Pokémon?</h5>
+
+      <!-- Imagen -->
+      <img 
+        [src]="questions[currentQuestionIndex]?.image"
+        [ngClass]="{ 'silhouette': !showAnswer }"
+        class="mb-3"
+        alt="Pokemon"
+        *ngIf="questions[currentQuestionIndex]"
+      />
+
+      <!-- Opciones -->
+      <div class="btn-group-vertical w-100">
+        <button 
+          *ngFor="let opt of questions[currentQuestionIndex]?.options"
+          class="btn mb-2"
+          [disabled]="showAnswer"
+          [ngClass]="{
+            'btn-primary': !showAnswer,
+            'btn-success': showAnswer && opt === questions[currentQuestionIndex]?.name,
+            'btn-danger': showAnswer && opt === selectedAnswer && opt !== questions[currentQuestionIndex]?.name
+          }"
+          (click)="submitAnswer(opt)">
+          {{ opt | titlecase }}
+        </button>
+      </div>
+
+      <!-- Feedback -->
+      <div class="mt-3" *ngIf="showAnswer">
+        <p *ngIf="wasCorrect" class="text-success">✅ ¡Correcto!</p>
+        <p *ngIf="!wasCorrect" class="text-danger">
+          ❌ Incorrecto. El Pokémon era <strong>{{ questions[currentQuestionIndex]?.name | titlecase }}</strong>.
+        </p>
+      </div>
+
+      <p *ngIf="!showAnswer" class="mt-3">⏱️ Tiempo restante: {{ timeLeft }}s</p>
+    </div>
+  </div>
+</div>
+
+
+  <div *ngIf="gameOver" class="text-center">
+    <h2>Juego terminado</h2>
+    <p>Tu puntaje: {{ score }} / {{ questions.length }}</p>
+    <button class="btn btn-success" (click)="restartGame()">Reintentar</button>
+  </div>
+
+  <style>
+  .silhouette {
+    filter: brightness(0) contrast(1.5);
+    width: 200px;
+    height: auto;
+  }
+
+  .card {
+  background-color: rgba(0, 0, 0, 0.4); /* negro translúcido */
+  border-radius: 12px;
+  color: white;
+}
+
+  </style>

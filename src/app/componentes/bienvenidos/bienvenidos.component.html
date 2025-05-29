@@ -9,12 +9,18 @@
   <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
     <a  routerLink="/juegos/ahorcado" class="btn btn-danger btn-lg px-4 shadow rounded-pill text-white fw-bold">🎯 Ahorcado</a>
     <a routerLink="/juegos/mayor-menor" class="btn btn-success btn-lg px-4 shadow rounded-pill text-white fw-bold">🔢 Mayor o Menor</a>
-    <a  class="btn btn-primary btn-lg px-4 shadow rounded-pill text-white fw-bold">❓ Preguntados</a>
-    <a  class="btn btn-dark btn-lg px-4 shadow rounded-pill text-white fw-bold">🎲 Diezmil</a>
+    <a routerLink="/juegos/preguntados" class="btn btn-primary btn-lg px-4 shadow rounded-pill text-white fw-bold">❓ Preguntados</a>
+    <a routerLink="/juegos/diezmil"  class="btn btn-dark btn-lg px-4 shadow rounded-pill text-white fw-bold">🎲 Diezmil</a>
   </div>
 </div>
 
-<app-chat *ngIf="user"></app-chat>
+<div *ngIf="user" class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+      <app-chat></app-chat>
+    </div>
+  </div>
+</div>
 
 
 <div *ngIf="!user" class="text-center text-warning mt-4">
