@@ -7,7 +7,8 @@
     <span *ngFor="let letra of letrasMostradas" class="mx-1">{{ letra }}</span>
   </div>
 
-  <div *ngIf="!juegoTerminado"  class="mb-5">
+  <div *ngIf="!juegoTerminado"  class="mb-5 d-flex flex-wrap justify-content-center">
+     <div class="d-flex flex-wrap justify-content-center" style="max-width: 600px;">
     <button 
       *ngFor="let letra of letrasDisponibles"
       (click)="adivinar(letra)"
@@ -15,6 +16,7 @@
       [disabled]="letrasUsadas.includes(letra)">
       {{ letra }}
     </button>
+    </div>
   </div>
 
   <div *ngIf="juegoTerminado" class="alert alert-info fs-4">

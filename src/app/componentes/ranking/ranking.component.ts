@@ -32,6 +32,6 @@ export class RankingComponent implements OnInit {
   }
 
     capitalizar(nombre: string): string {
-    return nombre.charAt(0).toUpperCase() + nombre.slice(1);
+    return nombre.toUpperCase();
   }
 }
