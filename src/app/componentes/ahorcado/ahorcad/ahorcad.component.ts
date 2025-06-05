@@ -1,5 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient("https://heeyngkurdgdlcfryorg.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhlZXluZ2t1cmRnZGxjZnJ5b3JnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNDM2NjksImV4cCI6MjA2MTcxOTY2OX0.8_hEGRfdaNsiQmQNEIbDHD8lIXoafIbTpfGgd-DOPh8");
 
 @Component({
   standalone: true,
@@ -48,10 +51,10 @@ export class AhorcadoComponent implements OnInit {
 
       if (!this.letrasMostradas.includes('_')) {
         this.juegoTerminado = true;
-        this.mensajeFinal = '¡Ganaste!';
+        this.mensajeFinal = `¡Ganaste! Puntaje final: ${this.vidas*10}`;
+        this.guardarPuntaje('ahorcado', this.vidas*10);
       }
     } else {
-      console.log("entro mal");
       this.vidas--;
       this.actualizarImagen();
       if (this.vidas < 1) {
@@ -66,4 +69,26 @@ export class AhorcadoComponent implements OnInit {
   actualizarImagen() {
     this.imagenActual = `assets/ahorcado${7 - this.vidas}.png`; // asegúrate de tener ahorcado0.png hasta ahorcado7.png
   }
+
+async guardarPuntaje(juego: string, puntaje: number) {
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error || !data?.user) {
+    console.error('Error al obtener el usuario autenticado:', error);
+    return;
+  }
+
+  const usuario = data.user.email || data.user.id;
+  console.log(usuario);
+  const { error: insertError } = await supabase
+    .from('puntuacion')
+    .insert([{ usuario, juego, puntaje, fecha: new Date().toISOString() }]);
+
+  if (insertError) {
+    console.error('Error al guardar el puntaje:', insertError.message);
+  } else {
+    console.log('Puntaje guardado correctamente');
+  }
+}
+
 }

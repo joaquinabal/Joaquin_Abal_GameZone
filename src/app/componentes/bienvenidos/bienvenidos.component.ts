@@ -1,15 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ChatComponent } from '../chat/chat/chat.component';
-import { createClient } from '@supabase/supabase-js';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { SupabaseService  } from '../../services/supabase/supabase.service';
 
-const supabase = createClient("https://heeyngkurdgdlcfryorg.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9");
 
 @Component({
   selector: 'app-bienvenidos',
   standalone: true,
-  imports: [CommonModule, ChatComponent, RouterOutlet, RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './bienvenidos.component.html',
   styleUrl: './bienvenidos.component.scss'
 })
@@ -17,7 +15,12 @@ export class BienvenidosComponent implements OnInit {
 
   user: any = null;
 
+  constructor(private supabase: SupabaseService) {}
+
 ngOnInit() {
+  
+  const supabase = this.supabase.getClient();
+
   supabase.auth.getUser().then(({ data, error }) => {
     this.user = data?.user;
   });

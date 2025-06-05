@@ -1,3 +1,4 @@
+<h1 class="text-center text-light my-4 p-3" style="background-color:  rgba(7, 7, 7, 0.5);">PREGUNTADOS</h1>
 <div *ngIf="!gameOver">
   <div class="card text-center">
     <div class="card-header">
@@ -10,26 +11,31 @@
       <img 
         [src]="questions[currentQuestionIndex]?.image"
         [ngClass]="{ 'silhouette': !showAnswer }"
-        class="mb-3"
+        class="mb-3 img-fluid"
         alt="Pokemon"
         *ngIf="questions[currentQuestionIndex]"
       />
 
-      <!-- Opciones -->
-      <div class="btn-group-vertical w-100">
-        <button 
-          *ngFor="let opt of questions[currentQuestionIndex]?.options"
-          class="btn mb-2"
-          [disabled]="showAnswer"
-          [ngClass]="{
-            'btn-primary': !showAnswer,
-            'btn-success': showAnswer && opt === questions[currentQuestionIndex]?.name,
-            'btn-danger': showAnswer && opt === selectedAnswer && opt !== questions[currentQuestionIndex]?.name
-          }"
-          (click)="submitAnswer(opt)">
-          {{ opt | titlecase }}
-        </button>
-      </div>
+<div class="container d-flex justify-content-center">
+  <div class="row" style="max-width: 600px;">
+    <div 
+      class="col-6 mb-3" 
+      *ngFor="let opt of questions[currentQuestionIndex]?.options">
+      <button 
+        class="btn w-100"
+        [disabled]="showAnswer"
+        [ngClass]="{
+          'btn-primary': !showAnswer,
+          'btn-success': showAnswer && opt === questions[currentQuestionIndex]?.name,
+          'btn-danger': showAnswer && opt === selectedAnswer && opt !== questions[currentQuestionIndex]?.name
+        }"
+        (click)="submitAnswer(opt)">
+        {{ opt | titlecase }}
+      </button>
+    </div>
+  </div>
+</div>
+
 
       <!-- Feedback -->
       <div class="mt-3" *ngIf="showAnswer">
@@ -46,7 +52,7 @@
 
 
   <div *ngIf="gameOver" class="text-center">
-    <h2>Juego terminado</h2>
+    <h2 class="p-2">¡Has respondido todas las preguntas!</h2>
     <p>Tu puntaje: {{ score }} / {{ questions.length }}</p>
     <button class="btn btn-success" (click)="restartGame()">Reintentar</button>
   </div>
@@ -54,8 +60,6 @@
   <style>
   .silhouette {
     filter: brightness(0) contrast(1.5);
-    width: 200px;
-    height: auto;
   }
 
   .card {

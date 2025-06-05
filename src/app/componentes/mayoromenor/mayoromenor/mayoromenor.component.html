@@ -13,8 +13,12 @@
   <button class="btn btn-danger" (click)="guess(false)">Menor</button>
 </div>
 
-<div *ngIf="gameOver" class="text-danger text-center fw-bold mt-3">
-  ¡Perdiste! Puntaje final: {{ score }}
+<div *ngIf="!gameOver" class="text-center fw-bold mt-3" style="background-color:  rgba(7, 7, 7, 0.5);">
+ Puntaje: {{ score }}
+</div>
+
+<div *ngIf="gameOver" class="text-danger text-center fw-bold mt-3" style="background-color:  rgba(7, 7, 7, 0.5);">
+  {{ mensajeFinal }}
 </div>
 
 <div class="text-center mt-3">

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit} from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { createClient } from '@supabase/supabase-js';
+import { ChatComponent } from './componentes/chat/chat/chat.component';
 
 const supabase = createClient("https://heeyngkurdgdlcfryorg.supabase.co", "your_supabase_key");
 
@@ -9,7 +10,7 @@ const supabase = createClient("https://heeyngkurdgdlcfryorg.supabase.co", "your_
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLinkActive, RouterLink, CommonModule],
+  imports: [RouterOutlet, RouterLinkActive, RouterLink, CommonModule, ChatComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

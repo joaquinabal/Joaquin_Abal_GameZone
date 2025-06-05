@@ -1,118 +1,68 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { createClient, User } from '@supabase/supabase-js'
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-
-
-
-const supabase = createClient("https://heeyngkurdgdlcfryorg.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhlZXluZ2t1cmRnZGxjZnJ5b3JnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNDM2NjksImV4cCI6MjA2MTcxOTY2OX0.8_hEGRfdaNsiQmQNEIbDHD8lIXoafIbTpfGgd-DOPh8");
+import { SupabaseService } from '../../services/supabase/supabase.service';
 
 @Component({
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule],
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-username: string;
-password: string;
+  username: string;
+  password: string;
+  supabase: any;
 
-constructor(private router: Router, private toastr: ToastrService) {
-  this.username = '';
-  this.password = '';
-}
-
-/*
-register() {
-  supabase.auth.signUp({
-    email: this.username,
-    password: this.password,
-  }).then(({ data, error }) => {
-    if (error) {
-  this.toastr.error(error.message, 'Error al registrarse');
-} else {
-  this.toastr.success('Registro exitoso. Verifica tu correo.', 'Éxito');
-      this.login();
-          
-}
+  constructor(private router: Router, private toastr: ToastrService, supabaseService: SupabaseService) {
+    this.username = '';
+    this.password = '';
+    this.supabase = supabaseService.getClient();
   }
-  );
-}
-*/
-async register() {
-  await supabase.auth.signUp({
-    email: this.username,
-    password: this.password,
-  }).then(({ data, error }) => {
-    if (error) {
-      if (error.message.includes('User already registered')) {
-        this.toastr.error('El correo ya está registrado y confirmado.', 'Error');
-      } else {
-        this.toastr.error(error.message, 'Error al registrarse');
-      }
-    } else {
-      this.toastr.success('Registro exitoso. Verifica tu correo.', 'Éxito');
-    this.login();
-    }
-  });
-}
 
 
-login() {
-    supabase.auth.signInWithPassword({
+
+  async register() {
+    const { data, error } = await this.supabase.auth.signUp({
       email: this.username,
       password: this.password,
-    }).then(async ({ data, error }) => {
-      if (error) {
-        console.error('Error:', error.message);
-      } else if (data?.user){
-        await supabase.from('login_logs').insert([
+    });
+    if (error) {
+      console.log(error)
+      if (error.message.includes('User already registered')) {
+        this.toastr.error('El correo ya está registrado y confirmado.'  );
+      } else if (error.message.includes("Signup requires a valid password")) {
+        this.toastr.error('Ingresa una contraseña válida.');
+      } else if (error.message.includes("email")) {
+        this.toastr.error('Ingresa un correo válido .');
+      }
+    } else {
+      this.toastr.success('Registro exitoso.');
+      await this.login();
+    }
+  };
+
+
+
+  async login() {
+    const { data, error } = await this.supabase.auth.signInWithPassword({
+      email: this.username,
+      password: this.password,
+    });
+    if (error) {
+      console.log(error);
+      console.error('Error:', error.message);
+    } else if (data?.user) {
+      await this.supabase.from('login_logs').insert([
         {
           user_id: data.user.id,
           email: data.user.email
         }
-        ])
-        this.router.navigate(['/home']);
-        
-      } 
-    });
-  }
-/*
-saveUserData(user: User) {
-
-  this.saveFile().then((data) => {
-    if (data) { 
-
-  supabase.from('usuarios').insert([
-  ]).then(({ data, error }) => {
-    if (error) {
-      console.error('Error:', error.message);
-    } else {
+      ])
       this.router.navigate(['/home']);
+
     }
-  });
+  };
 }
-});
-*/
-}
-/*
-async saveFile() {
-const { data, error } = await supabase
-  .storage
-  .from('images')
-  .upload(`users/${this.avatarFile?.name}`, this.avatarFile!, {
-    cacheControl: '3600',
-    upsert: false
-  });
-
-  return data;
-}
-
-onFileSelected(event: any) {
-  this.avatarFile = event.target.files[0];
-}
-*/
-
-

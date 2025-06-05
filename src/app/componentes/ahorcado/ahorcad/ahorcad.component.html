@@ -3,15 +3,15 @@
 
   <img [src]="imagenActual" alt="Ahorcado" class="img-fluid mb-3" style="max-height: 300px;">
 
-  <div class="mb-3 fs-3">
+  <div class="mb-3 fs-3" style="background-color:  rgba(7, 7, 7, 0.5);">
     <span *ngFor="let letra of letrasMostradas" class="mx-1">{{ letra }}</span>
   </div>
 
-  <div *ngIf="!juegoTerminado"  class="mb-4">
+  <div *ngIf="!juegoTerminado"  class="mb-5">
     <button 
       *ngFor="let letra of letrasDisponibles"
       (click)="adivinar(letra)"
-      class="btn btn-primary m-1"
+      class="btn btn-primary m-1" 
       [disabled]="letrasUsadas.includes(letra)">
       {{ letra }}
     </button>

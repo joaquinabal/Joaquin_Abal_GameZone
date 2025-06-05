@@ -4,6 +4,8 @@ import { BienvenidosComponent } from './componentes/bienvenidos/bienvenidos.comp
 import { ErrorComponent } from './componentes/error/error.component';
 import { RegisterComponent } from './componentes/register/register.component';
 import { QuienSoyComponent } from './componentes/quiensoy/quiensoy.component';
+import { RankingComponent } from './componentes/ranking/ranking.component';
+import { EncuestaComponent } from './componentes/encuesta/encuesta.component';
 
 
 export const routes: Routes = [
@@ -17,6 +19,14 @@ export const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent
+    },
+        {
+        path: 'encuesta',
+        component: EncuestaComponent
+    },
+    {
+        path: 'ranking',
+        component: RankingComponent
     },
     {
         path: 'register',

@@ -1,12 +1,13 @@
-<h1 class="text-center text-light my-4">
-  Bienvenidos a GAMEZONE
-</h1>
-
-<div *ngIf="user" class="text-center text-light">
-  <h2>Bienvenido, {{ user.email }}!</h2>
 
 
-  <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+<h1 class="text-center text-light my-4 p-3" style="background-color:  rgba(7, 7, 7, 0.5);">
+<img src="../assets/logo-gamezone.png" alt="GameZone Logo" height="200 rem"></h1>
+
+<div *ngIf="user" class="text-center text-light" >
+  <h2 class="my-4 p-3" style="background-color:  rgba(7, 7, 7, 0.5);">Bienvenido, {{ user.email }}!</h2>
+
+
+  <div class="d-flex flex-wrap justify-content-center gap-3 mt-4" >
     <a  routerLink="/juegos/ahorcado" class="btn btn-danger btn-lg px-4 shadow rounded-pill text-white fw-bold">🎯 Ahorcado</a>
     <a routerLink="/juegos/mayor-menor" class="btn btn-success btn-lg px-4 shadow rounded-pill text-white fw-bold">🔢 Mayor o Menor</a>
     <a routerLink="/juegos/preguntados" class="btn btn-primary btn-lg px-4 shadow rounded-pill text-white fw-bold">❓ Preguntados</a>
@@ -16,9 +17,7 @@
 
 <div *ngIf="user" class="container my-5">
   <div class="row justify-content-center">
-    <div class="col-md-10 col-lg-8">
-      <app-chat></app-chat>
-    </div>
+
   </div>
 </div>
 

@@ -15,6 +15,8 @@ export class ChatComponent implements OnInit {
   messages: any[] = [];
   newMessage: string = '';
   currentUser: any;
+  isChatOpen = false;
+
   @ViewChild('lastMessage') lastMessageElement!: ElementRef;
 
 
@@ -43,6 +45,11 @@ export class ChatComponent implements OnInit {
       setTimeout(() => this.scrollToBottom(), 100);
     }
   }
+
+toggleChat() {
+  this.isChatOpen = !this.isChatOpen;
+    this.scrollToBottom(); 
+}
 
 listenToMessages() {
   this.supabase

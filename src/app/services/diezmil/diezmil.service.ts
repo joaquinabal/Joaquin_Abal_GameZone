@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class DiezMilService {
-  readonly maxScore = 2000;
+  readonly maxScore = 1000;
   readonly diceCount = 5;
   turnCount = 0;
   totalScore = 0;

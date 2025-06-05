@@ -1,0 +1,39 @@
+
+<div class="container py-4">
+  <h2 class="text-center mb-4 p-3" style="background-color:  rgba(7, 7, 7, 0.5);">Ranking de {{ capitalizar(juegoActual) }}</h2>
+
+  <div class="d-flex justify-content-center mb-3">
+    <div class="btn-group">
+      <button 
+        *ngFor="let juego of juegos"
+        class="btn btn-primary"
+        [class.active]="juego === juegoActual"
+        (click)="cambiarJuego(juego)">
+        {{ capitalizar(juego) }}
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="puntuaciones.length > 0; else sinDatos">
+    <table class="table table-bordered table-hover text-center">
+      <thead class="table-light">
+        <tr>
+          <th>Usuario</th>
+          <th>Fecha</th>
+          <th>Puntaje</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of puntuaciones | slice:0:10">
+          <td>{{ p.usuario }}</td>
+          <td>{{ p.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ p.puntaje }}</td>
+        </tr>
+      </tbody>  
+    </table>
+  </div>
+
+  <ng-template #sinDatos>
+    <p class="text-center text-muted">No hay puntuaciones aún para este juego.</p>
+  </ng-template>
+</div>

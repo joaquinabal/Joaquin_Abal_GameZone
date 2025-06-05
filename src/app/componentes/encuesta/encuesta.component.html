@@ -1,0 +1,157 @@
+<div class="container">
+  <div class="card p-4 mt-4" style="background-color: rgba(7, 7, 7, 0.5);">
+
+    <form [formGroup]="form" (ngSubmit)="enviarForm()">
+
+      <div class="row">
+
+        <div class="form-control-group col-5">
+          <label class="form-label" for="nombre">Nombre</label>
+          <input type="text" class="form-control" id="nombre" formControlName="nombre">
+           <ng-container *ngIf="nombre?.hasError('required')">
+            <small class="text-danger">El nombre es obligatorio</small>
+          </ng-container>
+          <ng-container *ngIf="nombre?.hasError('pattern')">
+            <small class="text-danger">Sólo debe contener solo letras</small>
+          </ng-container>
+          <ng-container *ngIf="nombre?.hasError('minlength')">
+            <small class="text-danger">Debe por lo menos contener un caracter.</small>
+          </ng-container>
+        </div>
+      </div>
+
+            <div class="row">
+
+        <div class="form-control-group col-5">
+          <label class="form-label" for="apellido">Apellido</label>
+          <input type="text" class="form-control" id="apellido" formControlName="apellido">
+               <ng-container *ngIf="apellido?.hasError('required')">
+            <small class="text-danger">El apellido es obligatorio</small>
+          </ng-container>
+          <ng-container *ngIf="apellido?.hasError('pattern')">
+            <small class="text-danger">Sólo debe contener solo letras</small>
+          </ng-container>
+                    <ng-container *ngIf="nombre?.hasError('minlength')">
+            <small class="text-danger">Debe por lo menos contener un caracter.</small>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="row">
+
+
+        <div class="form-control-group col-5">
+          <label class="form-label" for="edad">Edad</label>
+          <input type="number" class="form-control" id="edad" formControlName="edad">
+                <ng-container *ngIf="edad?.hasError('required')">
+            <small class="text-danger">La edad es obligatoria</small>
+          </ng-container>
+          <ng-container *ngIf="edad?.hasError('min')">
+            <small class="text-danger">Debe ser mayor de edad</small>
+          </ng-container>
+          <ng-container *ngIf="edad?.hasError('max')">
+            <small class="text-danger">La edad debe ser menor a 99</small>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="form-control-group col-5">
+  <label class="form-label" for="telefono">Teléfono</label>
+  <input type="text" class="form-control" id="telefono" formControlName="telefono">
+
+  <small class="text-danger" *ngIf="telefono?.hasError('required')">
+    El teléfono es obligatorio.
+  </small>
+    <small class="text-danger" *ngIf="telefono?.hasError('minlength')">
+    Mínimo 8 dígitos.
+  </small>
+  <small class="text-danger" *ngIf="telefono?.hasError('maxlength')">
+    Máximo 10 dígitos.
+  </small>
+  <small class="text-danger" *ngIf="telefono?.hasError('pattern')">
+    Solo se permiten números.
+  </small>
+</div>
+      </div>
+
+      <div class="row">
+  <div class="form-control-group col-10">
+    <label class="form-label d-block mb-2">¿Qué juego es tu favorito?</label>
+
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" id="juego1" value="DiezMil" formControlName="juegoFavorito">
+      <label class="form-check-label" for="juego1">DiezMil</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" id="juego2" value="Ahorcado" formControlName="juegoFavorito">
+      <label class="form-check-label" for="juego2">Ahorcado</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" id="juego3" value="Preguntados" formControlName="juegoFavorito">
+      <label class="form-check-label" for="juego3">Preguntados</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" id="juego4" value="Mayor o Menor" formControlName="juegoFavorito">
+      <label class="form-check-label" for="juego4">Mayor o Menor</label>
+    </div>
+
+    <ng-container *ngIf="juegoFavorito?.hasError('required')">
+      <small class="text-danger d-block mt-2">Seleccionar un juego es obligatorio.</small>
+    </ng-container>
+  </div>
+</div>
+
+<div class="row">
+  <label class="form-label">Selecciona tus géneros favoritos de juegos (mínimo 2):</label>
+  <div class="col-12" [formGroup]="generos">
+    <div class="form-check" *ngFor="let genero of generosLista">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        [formControlName]="genero"
+        [id]="genero"
+      />
+      <label class="form-check-label" [for]="genero">{{ genero }}</label>
+    </div>
+    <div class="text-danger" *ngIf="generos.errors?.['minSeleccionados']">
+      Seleccioná al menos {{ generos.errors?.['minSeleccionados'].required }} géneros. Actualmente seleccionados: {{ generos.errors?.['minSeleccionados'].actual }}
+    </div>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="form-control-group col-12">
+    <label class="form-label" for="comentario">Dejá tu comentario:</label>
+    <textarea
+      class="form-control"
+      id="comentario"
+      rows="4"
+      formControlName="comentario"
+      placeholder="Escribí tu comentario aquí...">
+    </textarea>
+    <ng-container *ngIf="comentario?.touched || comentario?.invalid">
+      <small class="text-danger" *ngIf="comentario?.hasError('required')">El comentario es requerido.</small>
+      <small class="text-danger" *ngIf="comentario?.hasError('minlength')">
+        El comentario debe tener al menos {{ comentario?.getError('minlength')?.requiredLength }} caracteres.
+      </small>
+    </ng-container>
+  </div>
+</div>
+
+      
+
+     
+
+
+      <button type="submit" class="btn btn-primary w-25 mt-4">
+        Enviar
+      </button>
+
+    </form>
+  </div>
+</div>

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DeckApiService } from '../../../services/deck-api/deck-api.service';
 import { CommonModule } from '@angular/common';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient("https://heeyngkurdgdlcfryorg.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhlZXluZ2t1cmRnZGxjZnJ5b3JnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNDM2NjksImV4cCI6MjA2MTcxOTY2OX0.8_hEGRfdaNsiQmQNEIbDHD8lIXoafIbTpfGgd-DOPh8");
+
 
 @Component({
   selector: 'mayor-menor',
@@ -14,6 +18,7 @@ export class MayorMenorComponent {
   nextCard: any = null;
   score = 0;
   gameOver = false;
+  mensajeFinal = "";
 
 
   
@@ -58,7 +63,10 @@ export class MayorMenorComponent {
         this.currentCard = this.nextCard;
         this.nextCard = null;
       } else {
+        this.currentCard = this.nextCard;
         this.gameOver = true;
+        this.mensajeFinal = `¡Perdiste! Puntaje final: ${this.score}`;
+        this.guardarPuntaje('mayoromenor', this.score);
       }
     });
   }
@@ -72,4 +80,25 @@ export class MayorMenorComponent {
       default: return parseInt(value, 10);
     }
   }
+
+async guardarPuntaje(juego: string, puntaje: number) {
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error || !data?.user) {
+    console.error('Error al obtener el usuario autenticado:', error);
+    return;
+  }
+
+  const usuario = data.user.email || data.user.id;
+  console.log(usuario);
+  const { error: insertError } = await supabase
+    .from('puntuacion')
+    .insert([{ usuario, juego, puntaje, fecha: new Date().toISOString() }]);
+
+  if (insertError) {
+    console.error('Error al guardar el puntaje:', insertError.message);
+  } else {
+    console.log('Puntaje guardado correctamente');
+  }
+}
 }

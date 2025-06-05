@@ -1,0 +1,22 @@
+.card {
+  color: white; // Hace que todo el texto dentro de la card sea blanco
+}
+
+::placeholder {
+  color: rgba(255, 255, 255, 0.7); // Blanco suave para los placeholders
+}
+
+.form-control {
+  background-color: rgba(255, 255, 255, 0.1); // Hace los inputs un poco translúcidos
+  color: white; // Color del texto dentro del input
+  border: 1px solid white;
+}
+
+.form-check-label {
+  color: white; // Color de los labels de radio/checkbox
+}
+
+.form-text,
+.invalid-feedback {
+  color: #ffb3b3; // Para los mensajes de error en rojo claro
+}
